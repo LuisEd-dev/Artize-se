@@ -25,15 +25,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $sql = "SELECT id FROM tb_usuarios WHERE login = '$login' and senha = '$senha'";
     $result = mysqli_query($db,$sql);
     
-      
     $count = mysqli_num_rows($result);
-		
+    
+    $id = mysqli_fetch_assoc($result)['id'];
+    
     if($count == 1) {
         
         $_SESSION['usuario_login'] = $login;
+        $_SESSION['usuario_id'] = $id;
          
         if(isset($_POST['check']) && $_POST['check']  == "on"){
             setcookie("ManterSessao", $login, time() + 60*60*24);
+            setcookie("ManterID", $id, time() + 60*60*24);
         }
         header('Refresh:0');
 
@@ -48,9 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterSessao"]) ) ){
-    
+
     if (isset($_COOKIE["ManterSessao"])){
         $_SESSION["usuario_login"] = $_COOKIE["ManterSessao"];
+        $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
     }
     ?>
     
