@@ -1,6 +1,6 @@
 function form_login(){
     let jumbotron = document.getElementById('login-cadastro')
-
+    
     jumbotron.innerHTML = ""
 
     let h1 = document.createElement('h1')

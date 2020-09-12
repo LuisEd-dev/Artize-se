@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
         <script src='bootstrap/js/bootstrap.min.js'></script>
+        
     </head>
     <body>
 
@@ -69,7 +70,11 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login'
         <div class="container login-principal">
             <div class="row">
                 <div class="col-sm text-center">
-                    <div class="jumbotron">
+                        <button onclick="form_login()">Login</button>
+                        <button onclick="form_cadastro()">Cadastro</button>
+                    <div class="jumbotron" id="login-cadastro" >
+                        
+                        <!--
                         <h1 class="display-4 text-center">Artize-se</h1>
                         <p class="lead text-center">Contemple; Compartilhe; Aprecie a arte</p>
                         <hr class="my-5">
@@ -100,12 +105,12 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login'
                             
                           </form>
     
-                      </div>
+                      </div>-->
                 </div>
             </div>
         </div>
 
 <?php } ?>
-
+    <script src='src/main.js'></script>
     </body>
 </html>
