@@ -36,25 +36,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $_SESSION['usuario_id'] = $id;
          
         if(isset($_POST['check']) && $_POST['check']  == "on"){
-            setcookie("ManterSessao", $login, time() + 60*60*24);
+            setcookie("ManterLogin", $login, time() + 60*60*24);
             setcookie("ManterID", $id, time() + 60*60*24);
         }
         header('Refresh:0');
 
-    }else { ?>
-
-        <div class="alert alert-danger" role="alert">
-            Login ou Senha Incorretos!
-        </div>
-
-        <?php
+    }else { 
+        header('Location: index.php?erro-login'); 
     }
 }
 
-else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterSessao"]) ) ){
+else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) ){
 
-    if (isset($_COOKIE["ManterSessao"])){
-        $_SESSION["usuario_login"] = $_COOKIE["ManterSessao"];
+    if (isset($_COOKIE["ManterLogin"])){
+        $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
         $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
     }
     ?>
@@ -65,16 +60,52 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login
 
 <?php }
 
-else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login']) && !isset($_COOKIE["ManterSessao"])){ ?>
+else if(isset($_GET["erro-login"])){ ?>
 
-        <div class="container login-principal">
-            <div class="row">
-                <div class="col-sm text-center">
-                        <button onclick="form_login()">Login</button>
-                        <button onclick="form_cadastro()">Cadastro</button>
-                    <div class="jumbotron" id="login-cadastro" >
-                        
-                        <!--
+<div class="container">
+    <div class="row">
+        <div class="col-sm text-center">
+            <div class="alert alert-danger" role="alert">
+                    Login ou Senha Incorretos!
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 text-center">
+            <button type="button" class="btn btn-primary btn-block" onclick="form_login()">Login</button>
+        </div>
+        <div class="col-6 text-center">
+            <button type="button" class="btn btn-dark btn-block" onclick="form_cadastro()">Cadastro</button>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm text-center">
+            <div class="jumbotron" id="login-cadastro" >
+        </div>
+    </div>
+</div>
+
+<?php }
+else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login']) && !isset($_COOKIE["ManterLogin"])){ ?>
+
+<div class="container login-principal">
+    <div class="row">
+        <div class="col-6 text-center">
+            <button type="button" class="btn btn-primary btn-block" onclick="form_login()">Login</button>
+        </div>
+        <div class="col-6 text-center">
+            <button type="button" class="btn btn-dark btn-block" onclick="form_cadastro()">Cadastro</button>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm text-center">
+            <div class="jumbotron" id="login-cadastro" >
+        </div>
+    </div>
+</div>
+<!--
                         <h1 class="display-4 text-center">Artize-se</h1>
                         <p class="lead text-center">Contemple; Compartilhe; Aprecie a arte</p>
                         <hr class="my-5">
@@ -103,13 +134,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login'
                                 <button type="submit" class="btn btn-block btn-success">Acessar</button>
                             </div>
                             
-                          </form>
-    
-                      </div>-->
-                </div>
-            </div>
-        </div>
-
+                          </form>-->
 <?php } ?>
     <script src='src/main.js'></script>
     </body>
