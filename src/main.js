@@ -1,4 +1,5 @@
-function form_login(){
+function form_login($login){
+
     let jumbotron = document.getElementById('login-cadastro')
     
     jumbotron.innerHTML = ""
@@ -31,7 +32,10 @@ function form_login(){
     inputLogin.setAttribute("type", "text")
     inputLogin.setAttribute("class", "form-control")
     inputLogin.setAttribute("name", "login")
-
+    if($login != undefined){
+        inputLogin.setAttribute("value", $login)
+    }
+    
 
     
     let divFormGroupSenha = document.createElement("div")
@@ -73,6 +77,13 @@ function form_login(){
     buttonSubmit.setAttribute("class", "btn btn-block btn-success")
     buttonSubmit.appendChild(document.createTextNode("Acessar"))
 
+
+
+    let opcao = document.createElement('input')
+    opcao.setAttribute("type", "hidden")
+    opcao.setAttribute("name", "opcao")
+    opcao.setAttribute("value", "login")
+
 //
 
     jumbotron.appendChild(h1)
@@ -92,6 +103,8 @@ function form_login(){
     divFormGroupEntrar.appendChild(inputEntrar)
     divFormGroupEntrar.appendChild(labelEntrar)
     form.appendChild(divFormGroupEntrar)
+
+    form.appendChild(opcao)
 
     divButton.appendChild(buttonSubmit)
     form.appendChild(divButton)
@@ -176,6 +189,13 @@ function form_cadastro(){
     buttonSubmit.setAttribute("type", "submit")
     buttonSubmit.setAttribute("class", "btn btn-block btn-success")
     buttonSubmit.appendChild(document.createTextNode("Cadastrar"))
+    
+
+
+    let opcao = document.createElement('input')
+    opcao.setAttribute("type", "hidden")
+    opcao.setAttribute("name", "opcao")
+    opcao.setAttribute("value", "cadastro")
 
 //
 
@@ -197,6 +217,8 @@ function form_cadastro(){
     divColSenha.appendChild(inputSenha)
     divFormGroupSenha.appendChild(divColSenha)
     form.appendChild(divFormGroupSenha)
+
+    form.appendChild(opcao)
 
     divButton.appendChild(buttonSubmit)
     form.appendChild(divButton)

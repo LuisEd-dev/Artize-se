@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
         <script src='bootstrap/js/bootstrap.min.js'></script>
-        
+        <script src='src/main.js'></script>
     </head>
     <body>
 
@@ -19,31 +19,47 @@ session_start();
 include("db/db.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){
+    if ($_POST["opcao"] == "login"){
 
-    $login = mysqli_real_escape_string($db,$_POST['login']);
-    $senha = mysqli_real_escape_string($db,$_POST['senha']); 
-      
-    $sql = "SELECT id FROM tb_usuarios WHERE login = '$login' and senha = '$senha'";
-    $result = mysqli_query($db,$sql);
-    
-    $count = mysqli_num_rows($result);
-    
-    $id = mysqli_fetch_assoc($result)['id'];
-    
-    if($count == 1) {
+        $login = mysqli_real_escape_string($db,$_POST['login']);
+        $senha = mysqli_real_escape_string($db,$_POST['senha']); 
+          
+        $sql = "SELECT id FROM tb_usuarios WHERE login = '$login' and senha = '$senha'";
+        $result = mysqli_query($db,$sql);
         
-        $_SESSION['usuario_login'] = $login;
-        $_SESSION['usuario_id'] = $id;
-         
-        if(isset($_POST['check']) && $_POST['check']  == "on"){
-            setcookie("ManterLogin", $login, time() + 60*60*24);
-            setcookie("ManterID", $id, time() + 60*60*24);
+        $count = mysqli_num_rows($result);
+        
+        $id = mysqli_fetch_assoc($result)['id'];
+        
+        if($count == 1) {
+            
+            $_SESSION['usuario_login'] = $login;
+            $_SESSION['usuario_id'] = $id;
+             
+            if(isset($_POST['check']) && $_POST['check']  == "on"){
+                setcookie("ManterLogin", $login, time() + 60*60*24);
+                setcookie("ManterID", $id, time() + 60*60*24);
+            }
+            header('Refresh:0');
+    
+        }else { 
+            header("Location: index.php?erro-login=" . $login); 
         }
-        header('Refresh:0');
-
-    }else { 
-        header('Location: index.php?erro-login'); 
+    } else if ($_POST["opcao"] == "cadastro"){
+        $login = mysqli_real_escape_string($db,$_POST['login']);
+        $senha = mysqli_real_escape_string($db,$_POST['senha']); 
+        $email = mysqli_real_escape_string($db,$_POST['email']); 
+          
+        $sql = "INSERT INTO tb_usuarios(login, senha, email) VALUES ('$login', '$senha', '$email')";
+        $result = mysqli_query($db,$sql);
+        
+        if($result == 1){
+            echo "Cadastrado Com Sucesso!";
+        } else {
+            echo "Falha No Cadastro!";
+        }
     }
+    
 }
 
 else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) ){
@@ -60,7 +76,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login
 
 <?php }
 
-else if(isset($_GET["erro-login"])){ ?>
+else if(isset($_GET["erro-login"])){ $login = $_GET["erro-login"]; ?>
 
 <div class="container">
     <div class="row">
@@ -72,7 +88,7 @@ else if(isset($_GET["erro-login"])){ ?>
     </div>
     <div class="row">
         <div class="col-6 text-center">
-            <button type="button" class="btn btn-primary btn-block" onclick="form_login()">Login</button>
+            <button type="button" class="btn btn-primary btn-block" onclick="form_login('<?php echo $login; ?>')">Login</button>
         </div>
         <div class="col-6 text-center">
             <button type="button" class="btn btn-dark btn-block" onclick="form_cadastro()">Cadastro</button>
@@ -85,6 +101,9 @@ else if(isset($_GET["erro-login"])){ ?>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+   form_login('<?php echo $login; ?>');
+</script>
 
 <?php }
 else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login']) && !isset($_COOKIE["ManterLogin"])){ ?>
@@ -105,37 +124,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login'
         </div>
     </div>
 </div>
-<!--
-                        <h1 class="display-4 text-center">Artize-se</h1>
-                        <p class="lead text-center">Contemple; Compartilhe; Aprecie a arte</p>
-                        <hr class="my-5">
-                        
-                        <form action="index.php" method="POST">
-                            <div class="form-group">
-                                <div class="col-6 offset-3">
-                                    <label>Login</label>
-                                    <input type="text" class="form-control" name="login">
-                                </div> 
-                            </div>
-    
-                            <div class="form-group">
-                                <div class="col-6 offset-3">
-                                    <label>Senha</label>
-                                    <input type="password" class="form-control" name="senha">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group form-check">
-                              <input type="checkbox" class="form-check-input" name="check">
-                              <label class="form-check-label">Manter Sessão</label>
-                            </div>
-    
-                            <div class="col-6 offset-3">
-                                <button type="submit" class="btn btn-block btn-success">Acessar</button>
-                            </div>
-                            
-                          </form>-->
+
 <?php } ?>
-    <script src='src/main.js'></script>
     </body>
 </html>
