@@ -46,11 +46,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             header("Location: index.php?erro-login=" . $login); 
         }
     } else if ($_POST["opcao"] == "cadastro"){
+        
         $login = mysqli_real_escape_string($db,$_POST['login']);
         $senha = mysqli_real_escape_string($db,$_POST['senha']); 
         $email = mysqli_real_escape_string($db,$_POST['email']); 
+        $categoria = mysqli_real_escape_string($db,$_POST['categoria']); 
           
-        $sql = "INSERT INTO tb_usuarios(login, senha, email) VALUES ('$login', '$senha', '$email')";
+        $sql = "INSERT INTO tb_usuarios(login, senha, email, tipo) VALUES ('$login', '$senha', '$email', '$categoria')";
         $result = mysqli_query($db,$sql);
         
         if($result == 1){
@@ -121,6 +123,16 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login'
     <div class="row">
         <div class="col-sm text-center">
             <div class="jumbotron" id="login-cadastro" >
+            Música
+Dança
+Pintura
+Escultura
+Teatro
+Literatura
+Cinema
+Fotografia
+História em quadrinhos
+Arte digital
         </div>
     </div>
 </div>

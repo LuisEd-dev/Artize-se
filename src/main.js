@@ -196,6 +196,29 @@ function form_cadastro(){
     opcao.setAttribute("type", "hidden")
     opcao.setAttribute("name", "opcao")
     opcao.setAttribute("value", "cadastro")
+    
+
+    
+    let divFormGroupCategoria = document.createElement('div')
+    divFormGroupCategoria.setAttribute("class", "form-group")
+    
+    let divColCategoria = document.createElement('div')
+    divColCategoria.setAttribute("class", "col-6 offset-3")
+
+    let labelCategoria = document.createElement('label')
+    labelCategoria.appendChild(document.createTextNode("Categorias"))
+
+    let selectCategoria = document.createElement('select')
+    selectCategoria.setAttribute("class", "form-control")
+    selectCategoria.setAttribute("name", "categoria")
+
+    opcoes = ["Música", "Dança", "Pintura", "Escultura", "Teatro", "Literatura", "Cinema", "Fotografia", "História em quadrinhos", "Arte digital"]
+
+    for(opcaoCategoria in opcoes){
+        let option = document.createElement('option')
+        option.appendChild(document.createTextNode(opcoes[opcaoCategoria]))
+        selectCategoria.appendChild(option)
+    }
 
 //
 
@@ -219,6 +242,11 @@ function form_cadastro(){
     form.appendChild(divFormGroupSenha)
 
     form.appendChild(opcao)
+
+    divColCategoria.appendChild(labelCategoria)
+    divColCategoria.appendChild(selectCategoria)
+    divFormGroupCategoria.appendChild(divColCategoria)
+    form.appendChild(divFormGroupCategoria)
 
     divButton.appendChild(buttonSubmit)
     form.appendChild(divButton)
