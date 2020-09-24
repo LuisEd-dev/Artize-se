@@ -195,7 +195,7 @@ function form_cadastro(){
     let opcao = document.createElement('input')
     opcao.setAttribute("type", "hidden")
     opcao.setAttribute("name", "opcao")
-    opcao.setAttribute("value", "cadastro")
+    opcao.setAttribute("value", "confirmar")
     
 
     
@@ -212,11 +212,14 @@ function form_cadastro(){
     selectCategoria.setAttribute("class", "form-control")
     selectCategoria.setAttribute("name", "categoria")
 
-    opcoes = ["Música", "Dança", "Pintura", "Escultura", "Teatro", "Literatura", "Cinema", "Fotografia", "História em quadrinhos", "Arte digital"]
-
+    opcoes = ["Músico(a)", "Dançarino(a)", "Pintor(a)", "Escultor(a)", "Ator(a)", "Escritor(a)", "Cineasta", "Fotografo(a)", "Quadrinista", "Artista digital"]
+    n = 1
     for(opcaoCategoria in opcoes){
         let option = document.createElement('option')
+        option.setAttribute("value", n)
+        n++
         option.appendChild(document.createTextNode(opcoes[opcaoCategoria]))
+       
         selectCategoria.appendChild(option)
     }
 
@@ -226,15 +229,15 @@ function form_cadastro(){
     jumbotron.appendChild(p)
     jumbotron.appendChild(hr)
 
-    divColEmail.appendChild(labelEmail)
-    divColEmail.appendChild(inputEmail)
-    divFormGroupEmail.appendChild(divColEmail)
-    form.appendChild(divFormGroupEmail)
-
     divColLogin.appendChild(labelLogin)
     divColLogin.appendChild(inputLogin)
     divFormGroupLogin.appendChild(divColLogin)
     form.appendChild(divFormGroupLogin)
+
+    divColEmail.appendChild(labelEmail)
+    divColEmail.appendChild(inputEmail)
+    divFormGroupEmail.appendChild(divColEmail)
+    form.appendChild(divFormGroupEmail)
 
     divColSenha.appendChild(labelSenha)
     divColSenha.appendChild(inputSenha)
