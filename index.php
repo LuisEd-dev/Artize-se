@@ -60,6 +60,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         } else {
             echo "Falha No Cadastro!";
         }
+    } else if ($_POST["opcao"] == "confirmar"){
+        $content = http_build_query(array(
+            'email' => $_POST['email'],
+            'login' => $_POST['login'],
+            'senha' => $_POST['senha'],
+            'cadastro' => 'cadastro'
+            ));
+            
+            $context = stream_context_create(array(
+            'http' => array(
+            'method' => 'POST',
+            'content' => $content,
+            'header' => "Content-Type: application/x-www-form-urlencoded",
+            )
+            ));
+            
+            $result = file_get_contents('http://localhost/artize-se/src/mail.php', null, $context);
+            echo $result;
     }
     
 }
@@ -123,16 +141,6 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login'
     <div class="row">
         <div class="col-sm text-center">
             <div class="jumbotron" id="login-cadastro" >
-            Música
-Dança
-Pintura
-Escultura
-Teatro
-Literatura
-Cinema
-Fotografia
-História em quadrinhos
-Arte digital
         </div>
     </div>
 </div>
