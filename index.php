@@ -57,6 +57,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         
         if($result == 1){
             echo "Cadastrado Com Sucesso!";
+            $id = mysqli_real_escape_string($db,$_POST['id']);
+            $sql = "DELETE FROM tb_confirmar WHERE id = '$id'";
+            $result = mysqli_query($db,$sql);
         } else {
             echo "Falha No Cadastro!";
         }
@@ -65,6 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             'email' => $_POST['email'],
             'login' => $_POST['login'],
             'senha' => $_POST['senha'],
+            'categoria' => $_POST['categoria'],
+            'session' => $_COOKIE["PHPSESSID"],
             'cadastro' => 'cadastro'
             ));
             

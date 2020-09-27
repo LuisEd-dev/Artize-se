@@ -1,5 +1,22 @@
 <?php
-if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"]) && isset($_POST["cadastro"])){
+
+session_start();
+include("../db/db.php");
+
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"]) && isset($_POST["cadastro"]) && isset($_POST["session"]) && isset($_POST["categoria"])){
+    
+    $sessao = mysqli_real_escape_string($db,$_POST['session']);
+    $login = mysqli_real_escape_string($db,$_POST['login']);
+    $senha = mysqli_real_escape_string($db,$_POST['senha']); 
+    $email = mysqli_real_escape_string($db,$_POST['email']); 
+    $categoria = mysqli_real_escape_string($db,$_POST['categoria']); 
+        
+    $sql = "INSERT INTO tb_confirmar(sessao, login, senha, email, categoria) VALUES ('$sessao', '$login', '$senha', '$email', '$categoria')";
+    $result = mysqli_query($db,$sql);
+    
+    if($result != 1){
+        echo "Falha No Cadastro!";
+    }
 
     $to  =  $_POST["email"];
 
@@ -78,6 +95,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"]) && isset($_POS
             <b>Senha:</b>'.$_POST["senha"].'</label><br><br>
         <form action="http://localhost/artize-se/src/mail.php" method="GET">
             <input type="hidden" value="confirmar" name="confirmar">
+            <input type="hidden" value="'.$_POST["session"].'" name="session">
             <input type="hidden" value="'.$_POST["email"].'" name="email">
             <button class="confirmar" type="submit">Confirmar!</button>
         </form>
@@ -125,7 +143,40 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["email"]) && isset($_POS
         <?php
         echo 'Exceção capturada: ',  $e->getMessage(), "\n";
     }
-} else if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["email"]) && isset($_GET["confirmar"])){
-    echo "confirmado!";
+} else if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["email"]) && isset($_GET["confirmar"]) && $_GET["confirmar"] == "confirmar" && isset($_GET["session"]) && $_GET["session"] != "" ){
+        $email = mysqli_real_escape_string($db,$_GET['email']);
+        $sessao = mysqli_real_escape_string($db,$_GET['session']); 
+          
+        $sql = "SELECT id, login, senha, email, categoria FROM tb_confirmar WHERE sessao = '$sessao' and email = '$email'";
+        $result = mysqli_query($db,$sql);
+        
+        $row = mysqli_fetch_assoc($result);
+        
+        $id = $row['id'];
+        $login = $row['login'];
+        $senha = $row['senha'];
+        $email = $row['email'];
+        $categoria = $row['categoria'];
+        
+        $content = http_build_query(array(
+            'opcao' => 'cadastro',
+            'id' => $id,
+            'login' => $login,
+            'senha' => $senha,
+            'email' => $email,
+            'categoria' => $categoria,
+            ));
+            
+            $context = stream_context_create(array(
+            'http' => array(
+            'method' => 'POST',
+            'content' => $content,
+            'header' => "Content-Type: application/x-www-form-urlencoded",
+            )
+            ));
+            
+            $result = file_get_contents('http://localhost/artize-se/index.php', null, $context);
+            echo $result;
+            header("Location: ../index.php");
 }
 ?>
