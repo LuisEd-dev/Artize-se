@@ -99,7 +99,9 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login
             Logado Com Sucesso!
         </div>
 
-<?php }
+<?php
+    header("Location: perfil.php");
+}
 
 else if(isset($_GET["erro-login"])){ $login = $_GET["erro-login"]; ?>
 
