@@ -1,6 +1,11 @@
 <?php
 session_start();
+if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) ){
 
+    if (isset($_COOKIE["ManterLogin"])){
+        $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
+        $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +24,7 @@ session_start();
     <body>
         <div class="container">
             <div class="row">
-                <div class="col-12 img-perfil">
+                <div class="col-12 margin-top">
                     <center><img src="img/usuario.jpg" class="rounded-circle" alt="Cinque Terre" width="300" height="300"></center> 
                 </div>
                 <div class="col-12">
@@ -111,3 +116,4 @@ session_start();
 
     </body>
 </html>
+<?php } else { echo "Não Logado!"; } ?>

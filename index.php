@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $email = mysqli_real_escape_string($db,$_POST['email']); 
         $categoria = mysqli_real_escape_string($db,$_POST['categoria']); 
           
-        $sql = "INSERT INTO tb_usuarios(login, senha, email, tipo) VALUES ('$login', '$senha', '$email', '$categoria')";
+        $sql = "INSERT INTO tb_usuarios(login, senha, email, categoria) VALUES ('$login', '$senha', '$email', '$categoria')";
         $result = mysqli_query($db,$sql);
         
         if($result == 1){
@@ -64,25 +64,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "Falha No Cadastro!";
         }
     } else if ($_POST["opcao"] == "confirmar"){
-        $content = http_build_query(array(
-            'email' => $_POST['email'],
-            'login' => $_POST['login'],
-            'senha' => $_POST['senha'],
-            'categoria' => $_POST['categoria'],
-            'session' => $_COOKIE["PHPSESSID"],
-            'cadastro' => 'cadastro'
+
+        $email = mysqli_real_escape_string($db,$_POST['email']); 
+        $login = mysqli_real_escape_string($db,$_POST['login']);
+
+        $sqlEmailUsuarios = "SELECT email FROM tb_usuarios WHERE email = '$email'";
+        $resultEmailUsuarios = mysqli_query($db,$sqlEmailUsuarios);
+        $countEmailUsuarios = mysqli_num_rows($resultEmailUsuarios);
+
+        $sqlLoginUsuarios = "SELECT login FROM tb_usuarios WHERE login = '$login'";
+        $resultLoginUsuarios = mysqli_query($db,$sqlLoginUsuarios);
+        $countLoginUsuarios = mysqli_num_rows($resultLoginUsuarios);
+
+
+        if ($countEmailUsuarios == 0 && $countLoginUsuarios == 0){
+            $content = http_build_query(array(
+                'email' => $_POST['email'],
+                'login' => $_POST['login'],
+                'senha' => $_POST['senha'],
+                'categoria' => $_POST['categoria'],
+                'session' => $_COOKIE["PHPSESSID"],
+                'cadastro' => 'cadastro'
             ));
-            
+                
             $context = stream_context_create(array(
-            'http' => array(
-            'method' => 'POST',
-            'content' => $content,
-            'header' => "Content-Type: application/x-www-form-urlencoded",
-            )
+                'http' => array(
+                'method' => 'POST',
+                'content' => $content,
+                'header' => "Content-Type: application/x-www-form-urlencoded",
+                )
             ));
             
-            $result = file_get_contents('http://localhost/artize-se/src/mail.php', null, $context);
-            echo $result;
+            $result = file_get_contents('http://localhost/artize-se/src/mail.php', null, $context); 
+            echo $result;        
+        } else{
+            echo "Email e/ou Login já cadastrado!";
+        }
+        
     }
     
 }
@@ -135,7 +153,7 @@ else if(isset($_GET["erro-login"])){ $login = $_GET["erro-login"]; ?>
 <?php }
 else if ($_SERVER["REQUEST_METHOD"] == "GET" && !isset($_SESSION['usuario_login']) && !isset($_COOKIE["ManterLogin"])){ ?>
 
-<div class="container login-principal">
+<div class="container margin-top">
     <div class="row">
         <div class="col-6 text-center">
             <button type="button" class="btn btn-primary btn-block" onclick="form_login()">Login</button>
