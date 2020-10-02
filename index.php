@@ -18,23 +18,27 @@
 session_start();
 include("db/db.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["opcao"])){
     if ($_POST["opcao"] == "login"){
 
         $login = mysqli_real_escape_string($db,$_POST['login']);
         $senha = mysqli_real_escape_string($db,$_POST['senha']); 
           
-        $sql = "SELECT id FROM tb_usuarios WHERE login = '$login' and senha = '$senha'";
+        $sql = "SELECT id, login, nome FROM tb_usuarios WHERE login = '$login' and senha = '$senha'";
         $result = mysqli_query($db,$sql);
         
+        $row = mysqli_fetch_assoc($result);
         $count = mysqli_num_rows($result);
         
-        $id = mysqli_fetch_assoc($result)['id'];
+        $id = $row['id'];
+        $login = $row['login'];
+        $nome = $row['nome'];
         
         if($count == 1) {
             
             $_SESSION['usuario_login'] = $login;
             $_SESSION['usuario_id'] = $id;
+            $_SESSION['usuario_nome'] = $nome;
              
             if(isset($_POST['check']) && $_POST['check']  == "on"){
                 setcookie("ManterLogin", $login, time() + 60*60*24);
@@ -46,13 +50,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             header("Location: index.php?erro-login=" . $login); 
         }
     } else if ($_POST["opcao"] == "cadastro"){
-        
+
+        $nome = mysqli_real_escape_string($db,$_POST['nome']);
         $login = mysqli_real_escape_string($db,$_POST['login']);
         $senha = mysqli_real_escape_string($db,$_POST['senha']); 
         $email = mysqli_real_escape_string($db,$_POST['email']); 
         $categoria = mysqli_real_escape_string($db,$_POST['categoria']); 
           
-        $sql = "INSERT INTO tb_usuarios(login, senha, email, categoria) VALUES ('$login', '$senha', '$email', '$categoria')";
+        $sql = "INSERT INTO tb_usuarios(nome, login, senha, email, categoria) VALUES ('$nome', '$login', '$senha', '$email', '$categoria')";
         $result = mysqli_query($db,$sql);
         
         if($result == 1){
@@ -64,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             echo "Falha No Cadastro!";
         }
     } else if ($_POST["opcao"] == "confirmar"){
-
+        
         $email = mysqli_real_escape_string($db,$_POST['email']); 
         $login = mysqli_real_escape_string($db,$_POST['login']);
 
@@ -79,6 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if ($countEmailUsuarios == 0 && $countLoginUsuarios == 0){
             $content = http_build_query(array(
+                'nome' => $_POST['nome'],
                 'email' => $_POST['email'],
                 'login' => $_POST['login'],
                 'senha' => $_POST['senha'],
@@ -105,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     
 }
 
-else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) ){
+else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( (isset($_SESSION["usuario_login"]) && isset($_SESSION["usuario_nome"])) || isset($_COOKIE["ManterLogin"]) ) ){
 
     if (isset($_COOKIE["ManterLogin"])){
         $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
@@ -118,7 +124,7 @@ else if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login
         </div>
 
 <?php
-    header("Location: perfil.php");
+    header("Location: verifica_contato.php");
 }
 
 else if(isset($_GET["erro-login"])){ $login = $_GET["erro-login"]; ?>

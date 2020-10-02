@@ -1,3 +1,26 @@
+<?php
+session_start();
+include("db/db.php");
+
+if($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_SESSION["usuario_id"]) && $_SESSION["usuario_id"] != "") && (isset($_POST["telefone"]) && $_POST["telefone"] != "") && (isset($_POST["celular"]) && $_POST["celular"] != "") && (isset($_POST["cidade"]) && $_POST["cidade"] != "") && (isset($_POST["uf"]) && $_POST["uf"] != "") && (isset($_POST["mensagem"]) && $_POST["mensagem"] != "")){
+ 
+    $id = mysqli_real_escape_string($db,$_SESSION["usuario_id"]);  
+    $telefone = mysqli_real_escape_string($db,$_POST["telefone"]); 
+    $celular = mysqli_real_escape_string($db,$_POST["celular"]); 
+    $cidade = mysqli_real_escape_string($db,$_POST["cidade"]); 
+    $uf = mysqli_real_escape_string($db,$_POST["uf"]); 
+    $mensagem = mysqli_real_escape_string($db,$_POST["mensagem"]); 
+
+    $sql = "INSERT INTO tb_contato (id, telefone, celular, cidade, UF, mensagem) VALUES ('$id', '$telefone', '$celular', '$cidade', '$uf', '$mensagem')";
+    $result = mysqli_query($db,$sql);
+
+    if($result != 1){
+        echo "Falha No Cadastro!";
+    } else{
+        header("Location: perfil.php");
+    }
+} else{ ?>
+
 <!DOCTYPE html>
     <html lang="pt">
     <head>
@@ -19,32 +42,32 @@
                         <h1>
                             Cadastrar Informações de Contato
                             <hr>
-                            <small>luised-dev</small>
+                            <small><?php echo $_SESSION["usuario_login"]; ?></small>
                         </h1>
                     </center>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6 offset-3 margin-top">
-                    <form>
+                    <form action="contato.php" method="POST">
                         <div class="form-group">
-                          <label for="exampleInputEmail1">Telefone Fixo</label>
-                          <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Telefone Fixo">
+                          <label>Telefone Fixo</label>
+                          <input type="number" class="form-control" placeholder="Telefone Fixo" name="telefone">
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Celular</label>
-                            <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Celular">
+                            <label>Celular</label>
+                            <input type="number" class="form-control" placeholder="Celular" name="celular">
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Cidade</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Cidade">
+                            <label>Cidade</label>
+                            <input type="text" class="form-control" placeholder="Cidade" name="cidade">
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleFormControlSelect1">Estado</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
+                            <label>Estado</label>
+                            <select class="form-control" name="uf">
                               <option>AC</option>
                               <option>AL</option>
                               <option>AP</option>
@@ -76,14 +99,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Observação</label>
-                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Observação">
+                            <label>Mensagem</label>
+                            <input type="text" class="form-control" placeholder="Mensagem" name="mensagem">
                         </div>
                         
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-block">Salvar</button>
                       </form>
                 </div>
             </div>
         </div>
     </body>
 </html>
+
+<?php } ?>

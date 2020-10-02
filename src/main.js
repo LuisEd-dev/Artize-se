@@ -150,6 +150,22 @@ function form_cadastro(){
 
 
 
+    let divFormGroupNome = document.createElement("div")
+    divFormGroupNome.setAttribute("class", "form-group")
+
+    let divColNome = document.createElement('div')
+    divColNome.setAttribute("class", "col-6 offset-3")
+
+    let labelNome = document.createElement('label')
+    labelNome.appendChild(document.createTextNode("Nome"))
+
+    let inputNome = document.createElement('input')
+    inputNome.setAttribute("type", "text")
+    inputNome.setAttribute("class", "form-control")
+    inputNome.setAttribute("name", "nome")
+
+
+
     let divFormGroupLogin = document.createElement("div")
     divFormGroupLogin.setAttribute("class", "form-group")
 
@@ -228,6 +244,11 @@ function form_cadastro(){
     jumbotron.appendChild(h1)
     jumbotron.appendChild(p)
     jumbotron.appendChild(hr)
+
+    divColNome.appendChild(labelNome)
+    divColNome.appendChild(inputNome)
+    divFormGroupNome.appendChild(divColNome)
+    form.appendChild(divFormGroupNome)
 
     divColLogin.appendChild(labelLogin)
     divColLogin.appendChild(inputLogin)

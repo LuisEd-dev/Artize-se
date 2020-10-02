@@ -1,11 +1,21 @@
 <?php
 session_start();
+include("db/db.php");
+
+    
 if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) ){
 
     if (isset($_COOKIE["ManterLogin"])){
         $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
         $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
     }
+    $id = mysqli_real_escape_string($db,$_SESSION["usuario_id"]); 
+
+    $sql = "SELECT id FROM tb_contato WHERE id = '$id'";
+    $result = mysqli_query($db,$sql);
+    $count = mysqli_num_rows($result);
+
+    if($count == 1){
 ?>
 
 <!DOCTYPE html>
@@ -29,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                 </div>
                 <div class="col-12">
                     <div class="jumbotron text-center jumbotron-perfil">
-                        <h1 class="display-4"><?php echo $_SESSION["usuario_login"]; ?></h1>
+                        <h1 class="display-4"><?php echo $_SESSION["usuario_nome"]; ?></h1>
                         <p class="lead">Breve Apresentação</p>
                         <hr class="my-4">
                         <p>Biografia completa</p>
@@ -114,6 +124,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
 
         </div>
 
+        <a class="btn btn-danger btn-block" href="logout.php">Sair</a>
+
     </body>
 </html>
-<?php } else { echo "Não Logado!"; } ?>
+<?php } } else { header("Location: ."); } ?>
