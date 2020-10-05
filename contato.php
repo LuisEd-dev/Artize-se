@@ -52,12 +52,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_SESSION["usuario_id"]) && $_
                     <form action="contato.php" method="POST">
                         <div class="form-group">
                           <label>Telefone Fixo</label>
-                          <input type="number" class="form-control" placeholder="Telefone Fixo" name="telefone">
+                          <input type="tel" class="form-control" placeholder="Telefone Fixo" name="telefone">
                         </div>
 
                         <div class="form-group">
                             <label>Celular</label>
-                            <input type="number" class="form-control" placeholder="Celular" name="celular">
+                            <input type="tel" class="form-control" placeholder="Celular" name="celular">
                         </div>
 
                         <div class="form-group">

@@ -16,6 +16,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
     $count = mysqli_num_rows($result);
 
     if($count == 1){
+        $sql = "select * from tb_usuarios
+        INNER JOIN tb_contato on (tb_usuarios.id = tb_contato.id)
+        WHERE tb_usuarios.id = " . $_SESSION["usuario_id"];
+        $result = mysqli_query($db,$sql);
+        $row = mysqli_fetch_assoc($result);
+
 ?>
 
 <!DOCTYPE html>
@@ -43,8 +49,38 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                         <p class="lead">Breve Apresentação</p>
                         <hr class="my-4">
                         <p>Biografia completa</p>
-                        <a class="btn btn-primary btn-lg" onclick="contato(#passar informações e apresentar modal)" role="button">Entrar em Contato</a>
-                      </div>
+
+
+
+                        <div class="modal fade text-center" id="contato-modal" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="contato-modal">Informações para Contato</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <h3> Nome: <?php echo $row['nome']; ?> </h3>
+                                <h3> Email: <?php echo $row['email']; ?> </h3>
+                                <h3> Telefone: <?php echo $row['telefone']; ?> </h3>
+                                <h3> Celular: <?php echo $row['celular']; ?> </h3>
+                                <h3> Local: <?php echo $row['cidade'] . " - " . $row['UF'] ?> </h3>
+                                <hr>
+                                <h3> <?php echo $row['mensagem']; ?> </h3>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+
+                            <!--onclick="contato('<?php echo $row['nome'] . ';' . $row['email'] . ';' . $row['telefone'] . ';' . $row['celular'] . ';' . $row['cidade'] . ';' . $row['UF'] . ';' . $row['mensagem']; ?>')"-->
+                        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#contato-modal" role="button">Entrar em Contato</a>
+                      </div> 
                 </div>
             </div>
             <div class="row">
