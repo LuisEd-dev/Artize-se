@@ -4,24 +4,25 @@ include("db/db.php");
 
     
 if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) ){
-
+    
     if (isset($_COOKIE["ManterLogin"])){
         $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
         $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
     }
+    
     $id = mysqli_real_escape_string($db,$_SESSION["usuario_id"]); 
 
     $sql = "SELECT id FROM tb_contato WHERE id = '$id'";
     $result = mysqli_query($db,$sql);
     $count = mysqli_num_rows($result);
-
+    
     if($count == 1){
         $sql = "select * from tb_usuarios
         INNER JOIN tb_contato on (tb_usuarios.id = tb_contato.id)
         WHERE tb_usuarios.id = " . $_SESSION["usuario_id"];
         $result = mysqli_query($db,$sql);
         $row = mysqli_fetch_assoc($result);
-
+        
 ?>
 
 <!DOCTYPE html>
@@ -44,8 +45,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                     <center><img src="img/usuario.jpg" class="rounded-circle" alt="Cinque Terre" width="300" height="300"></center> 
                 </div>
                 <div class="col-12">
-                    <div class="jumbotron text-center jumbotron-perfil">
-                        <h1 class="display-4"><?php echo $_SESSION["usuario_nome"]; ?></h1>
+                    <div class="jumbotron text-center jumbotron-perfil" id="jumbotron-perfil">
+                        <h1 id="usuario_nome" class="display-4" style="margin-left: 35px"><?php echo $_SESSION["usuario_nome"]; ?>
+                        <a class="editar" onclick="editar_nome('<?php echo $_SESSION['usuario_nome'] . "')" . '"'; ?> >
+                            <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-pen-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                            </svg>
+                        </a>
+                        </h1>
                         <p class="lead">Breve Apresentação</p>
                         <hr class="my-4">
                         <p>Biografia completa</p>
@@ -77,8 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                         </div>
                     </div>
 
-
-                            <!--onclick="contato('<?php echo $row['nome'] . ';' . $row['email'] . ';' . $row['telefone'] . ';' . $row['celular'] . ';' . $row['cidade'] . ';' . $row['UF'] . ';' . $row['mensagem']; ?>')"-->
                         <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#contato-modal" role="button">Entrar em Contato</a>
                       </div> 
                 </div>
@@ -164,4 +169,22 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
 
     </body>
 </html>
-<?php } } else { header("Location: ."); } ?>
+<?php } }
+else if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && isset($_POST["alterar_nome"])){
+
+    $id = mysqli_real_escape_string($db,$_SESSION["usuario_id"]); 
+    $nome = mysqli_real_escape_string($db,$_POST["alterar_nome"]); 
+
+    $sql = "UPDATE tb_usuarios SET nome = '$nome' WHERE id = '$id'";
+    $result = mysqli_query($db,$sql);
+    
+    if($result == 1){
+
+        $_SESSION["usuario_nome"] = $nome;
+
+        header("Refresh: 0");
+    } else {
+        echo "Erro ao alterar nome de usuario!";
+    }
+
+} else { header("Location: ."); } ?>

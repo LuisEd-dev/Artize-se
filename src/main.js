@@ -277,3 +277,31 @@ function form_cadastro(){
 
     jumbotron.appendChild(form)
 }
+function editar_nome($nome){
+    let h1 = document.getElementById("usuario_nome")
+    h1.innerHTML = ""
+
+    let jumbotron = document.getElementById("jumbotron-perfil")
+    jumbotron.innerHTML = ""
+
+    let form = document.createElement("form")
+    form.setAttribute("action", "perfil.php")
+    form.setAttribute("method", "POST")
+
+    let input = document.createElement("input")
+    input.setAttribute("name", "alterar_nome")
+    input.setAttribute("type", "text")
+    input.setAttribute("class", "form-control offset-3")
+    input.setAttribute("style", "width: 50%;")
+    input.setAttribute("value", $nome)
+
+    let button = document.createElement("button")
+    button.setAttribute("class", "btn btn-primary ")
+    button.setAttribute("style", "width: 50%;")
+    button.appendChild(document.createTextNode("Alterar Nome do Usuário"))
+
+    form.appendChild(input)
+    form.appendChild(button)
+
+    jumbotron.appendChild(form)
+}
