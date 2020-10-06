@@ -305,3 +305,46 @@ function editar_nome($nome){
 
     jumbotron.appendChild(form)
 }
+function editar_img(){
+    let h1 = document.getElementById("usuario_nome")
+    h1.innerHTML = ""
+
+    let jumbotron = document.getElementById("jumbotron-perfil")
+    jumbotron.innerHTML = ""
+
+    let form = document.createElement("form")
+    form.setAttribute("enctype", "multipart/form-data")
+    form.setAttribute("action", "perfil.php")
+    form.setAttribute("method", "POST")
+
+    let div = document.createElement("div")
+    div.setAttribute("class", "form-group")
+
+    let label = document.createElement("label")
+    label.appendChild(document.createTextNode("Editar Imagem de Perfil"))
+
+    let input1 = document.createElement("input")
+    input1.setAttribute("type", "hidden")
+    input1.setAttribute("name", "MAX_FILE_SIZE")
+    input1.setAttribute("value", "99999999")
+
+    let input2 = document.createElement("input")
+    input2.setAttribute("type", "file")
+    input2.setAttribute("class", "form-control-file offset-4")
+    input2.setAttribute("name", "alterar_foto")
+
+    let button = document.createElement("button")
+    button.setAttribute("type", "submit")
+    button.setAttribute("class", "btn btn-primary")
+    button.appendChild(document.createTextNode("Enviar!"))
+
+    div.appendChild(label)
+    div.appendChild(input1)
+    div.appendChild(input2)
+
+    div.appendChild(button)
+
+    form.appendChild(div)
+
+    jumbotron.appendChild(form)
+}

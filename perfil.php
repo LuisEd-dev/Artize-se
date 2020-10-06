@@ -19,6 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
     if($count == 1){
         $sql = "select * from tb_usuarios
         INNER JOIN tb_contato on (tb_usuarios.id = tb_contato.id)
+        INNER JOIN tb_img_usuario on (tb_usuarios.id = tb_img_usuario.id)
         WHERE tb_usuarios.id = " . $_SESSION["usuario_id"];
         $result = mysqli_query($db,$sql);
         $row = mysqli_fetch_assoc($result);
@@ -42,10 +43,29 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
         <div class="container">
             <div class="row">
                 <div class="col-12 margin-top">
-                    <center><img src="img/usuario.jpg" class="rounded-circle" alt="Cinque Terre" width="300" height="300"></center> 
+                    <center>
+                        <?php echo '<img style="margin-left: 25px;" class="rounded-circle" width="300" height="300" src="data:image/jpeg;base64,' . base64_encode($row["img"]) . '" />'; ?>
+                        <a class="editar" onclick="editar_img()">
+                            <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-pen-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                            </svg>
+                        </a>
+                    </center> 
                 </div>
                 <div class="col-12">
                     <div class="jumbotron text-center jumbotron-perfil" id="jumbotron-perfil">
+                        
+                        <!--
+                        <form enctype="multipart/form-data" action="perfil.php" method="POST">
+                            <div class="form-group">
+                                <label for="exampleFormControlFile1">Editar Imagem de Perfil</label>
+                                <input type="hidden" name="MAX_FILE_SIZE" value="99999999"/>
+                                <input type="file" class="form-control-file" name="alterar_foto">
+                            </div>
+                            <input type="submit"></input>
+                        </form>
+                        -->
+                        
                         <h1 id="usuario_nome" class="display-4" style="margin-left: 35px"><?php echo $_SESSION["usuario_nome"]; ?>
                         <a class="editar" onclick="editar_nome('<?php echo $_SESSION['usuario_nome'] . "')" . '"'; ?> >
                             <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-pen-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -172,6 +192,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
 <?php } }
 else if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && isset($_POST["alterar_nome"])){
 
+    if (isset($_COOKIE["ManterLogin"])){
+        $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
+        $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
+    }
+
     $id = mysqli_real_escape_string($db,$_SESSION["usuario_id"]); 
     $nome = mysqli_real_escape_string($db,$_POST["alterar_nome"]); 
 
@@ -187,4 +212,47 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_logi
         echo "Erro ao alterar nome de usuario!";
     }
 
-} else { header("Location: ."); } ?>
+} else if($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && isset($_FILES["alterar_foto"])){
+
+
+    if (isset($_COOKIE["ManterLogin"])){
+        $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
+        $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
+    }
+
+    $imagem = $_FILES['alterar_foto']['tmp_name'];
+    $tamanho = $_FILES['alterar_foto']['size'];
+    $tipo = $_FILES['alterar_foto']['type'];
+    $nome = $_FILES['alterar_foto']['name'];
+
+    if ( $imagem != "none" )
+    {
+        $fp = fopen($imagem, "rb");
+        $conteudo = fread($fp, $tamanho);
+        $conteudo = addslashes($conteudo);
+        fclose($fp);
+
+        $sql = "UPDATE tb_usuarios SET nome = '$nome' WHERE id = '$id'";
+        $result = mysqli_query($db,$sql);
+        
+        if($result == 1){
+            $queryInsercao = "UPDATE tb_img_usuario SET img = '$conteudo' WHERE id = " . $_SESSION['usuario_id'];
+            mysqli_query($db, $queryInsercao) or die("Erro ao gravar a imagem!");
+            echo 'Imagem gravada com sucesso!';
+        } else {
+            $queryInsercao = "INSERT INTO tb_img_usuario (id, img) VALUES ('" . $_SESSION['usuario_id'] ."', '" . $conteudo . "')";
+            mysqli_query($db, $queryInsercao) or die("Erro ao gravar a imagem!");
+            echo 'Imagem gravada com sucesso!';
+        }
+            
+
+    /*$querySelecionaPorCodigo = "SELECT img FROM tb_img_usuario WHERE id = 2";
+    $resultado = mysqli_query($db,$querySelecionaPorCodigo);
+    $row = mysqli_fetch_assoc($resultado);*/
+    //echo '<img src="data:image/jpeg;base64,' . base64_encode($row["img"]) . '" />';
+
+    header('Location: index.php');  
+    }
+    else{print "Não foi possível carregar a imagem.";}
+    }
+else { header("Location: ."); } ?>
