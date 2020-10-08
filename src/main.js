@@ -278,8 +278,6 @@ function form_cadastro(){
     jumbotron.appendChild(form)
 }
 function editar_nome($nome){
-    let h1 = document.getElementById("usuario_nome")
-    h1.innerHTML = ""
 
     let jumbotron = document.getElementById("jumbotron-perfil")
     jumbotron.innerHTML = ""
@@ -306,8 +304,6 @@ function editar_nome($nome){
     jumbotron.appendChild(form)
 }
 function editar_img(){
-    let h1 = document.getElementById("usuario_nome")
-    h1.innerHTML = ""
 
     let jumbotron = document.getElementById("jumbotron-perfil")
     jumbotron.innerHTML = ""
@@ -345,6 +341,97 @@ function editar_img(){
     div.appendChild(button)
 
     form.appendChild(div)
+
+    jumbotron.appendChild(form)
+}
+function editar_contato($email, $telefone, $celular, $cidade, $uf, $mensagem){
+
+    let jumbotron = document.getElementById("jumbotron-perfil")
+    jumbotron.innerHTML = ""
+
+    let form = document.createElement("form")
+    form.setAttribute("action", "perfil.php")
+    form.setAttribute("method", "POST")
+
+    let labelEmail = document.createElement('label')
+    labelEmail.appendChild(document.createTextNode("Email:"))
+
+    let inputEmail = document.createElement("input")
+    inputEmail.setAttribute("name", "alterar_email")
+    inputEmail.setAttribute("type", "email")
+    inputEmail.setAttribute("class", "form-control offset-3")
+    inputEmail.setAttribute("style", "width: 50%;")
+    inputEmail.setAttribute("value", $email)
+
+    let labelTelefone = document.createElement('label')
+    labelTelefone.appendChild(document.createTextNode("Telefone:"))
+
+    let inputTelefone = document.createElement("input")
+    inputTelefone.setAttribute("name", "alterar_telefone")
+    inputTelefone.setAttribute("type", "tel")
+    inputTelefone.setAttribute("class", "form-control offset-3")
+    inputTelefone.setAttribute("style", "width: 50%;")
+    inputTelefone.setAttribute("value", $telefone)
+
+    let labelCelular = document.createElement('label')
+    labelCelular.appendChild(document.createTextNode("Celular:"))
+
+    let inputCelular = document.createElement("input")
+    inputCelular.setAttribute("name", "alterar_celular")
+    inputCelular.setAttribute("type", "tel")
+    inputCelular.setAttribute("class", "form-control offset-3")
+    inputCelular.setAttribute("style", "width: 50%;")
+    inputCelular.setAttribute("value", $celular)
+
+    let labelCidade = document.createElement('label')
+    labelCidade.appendChild(document.createTextNode("Cidade:"))
+
+    let inputCidade = document.createElement("input")
+    inputCidade.setAttribute("name", "alterar_cidade")
+    inputCidade.setAttribute("type", "text")
+    inputCidade.setAttribute("class", "form-control offset-3")
+    inputCidade.setAttribute("style", "width: 50%;")
+    inputCidade.setAttribute("value", $cidade)
+
+    let labelUF = document.createElement('label')
+    labelUF.appendChild(document.createTextNode("UF:"))
+
+    let inputUF = document.createElement("input")
+    inputUF.setAttribute("name", "alterar_uf")
+    inputUF.setAttribute("type", "text")
+    inputUF.setAttribute("class", "form-control offset-3")
+    inputUF.setAttribute("style", "width: 50%;")
+    inputUF.setAttribute("value", $uf)
+
+    let labelMensagem = document.createElement('label')
+    labelMensagem.appendChild(document.createTextNode("Mensagem:"))
+
+    let inputMensagem = document.createElement("input")
+    inputMensagem.setAttribute("name", "alterar_mensagem")
+    inputMensagem.setAttribute("type", "text")
+    inputMensagem.setAttribute("class", "form-control offset-3")
+    inputMensagem.setAttribute("style", "width: 50%;")
+    inputMensagem.setAttribute("value", $mensagem)
+
+    let button = document.createElement("button")
+    button.setAttribute("class", "btn btn-primary ")
+    button.setAttribute("style", "width: 50%;")
+    button.appendChild(document.createTextNode("Alterar Dados de Contato"))
+
+    form.appendChild(labelEmail)
+    form.appendChild(inputEmail)
+    form.appendChild(labelTelefone)
+    form.appendChild(inputTelefone)
+    form.appendChild(labelCelular)
+    form.appendChild(inputCelular)
+    form.appendChild(labelCidade)
+    form.appendChild(inputCidade)
+    form.appendChild(labelUF)
+    form.appendChild(inputUF)
+    form.appendChild(labelMensagem)
+    form.appendChild(inputMensagem)
+
+    form.appendChild(button)
 
     jumbotron.appendChild(form)
 }

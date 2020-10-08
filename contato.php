@@ -2,7 +2,7 @@
 session_start();
 include("db/db.php");
 
-if($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_SESSION["usuario_id"]) && $_SESSION["usuario_id"] != "") && (isset($_POST["telefone"]) && $_POST["telefone"] != "") && (isset($_POST["celular"]) && $_POST["celular"] != "") && (isset($_POST["cidade"]) && $_POST["cidade"] != "") && (isset($_POST["uf"]) && $_POST["uf"] != "") && (isset($_POST["mensagem"]) && $_POST["mensagem"] != "")){
+if($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_SESSION["usuario_id"]) && $_SESSION["usuario_id"] != "") && (isset($_POST["telefone"]) && $_POST["telefone"] != "") && (isset($_POST["celular"]) && $_POST["celular"] != "") && (isset($_POST["cidade"]) && $_POST["cidade"] != "") && (isset($_POST["uf"]) && $_POST["uf"] != "") && (isset($_POST["mensagem"]) && $_POST["mensagem"] != "") && isset($_FILES['foto'])){
  
     $id = mysqli_real_escape_string($db,$_SESSION["usuario_id"]);  
     $telefone = mysqli_real_escape_string($db,$_POST["telefone"]); 
@@ -17,8 +17,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_SESSION["usuario_id"]) && $_
     if($result != 1){
         echo "Falha No Cadastro!";
     } else{
-        header("Location: perfil.php");
+        $imagem = $_FILES['foto']['tmp_name'];
+        $tamanho = $_FILES['foto']['size'];
+        $tipo = $_FILES['foto']['type'];
+        $nome = $_FILES['foto']['name'];
+    
+        if ( $imagem != "none" )
+        {
+            $fp = fopen($imagem, "rb");
+            $conteudo = fread($fp, $tamanho);
+            $conteudo = addslashes($conteudo);
+            fclose($fp);
+    
+            $queryInsercao = "INSERT INTO tb_img_usuario (id, img) VALUES ('" . $_SESSION['usuario_id'] ."', '" . $conteudo . "')";
+            mysqli_query($db, $queryInsercao) or die("Erro ao gravar a imagem!");
+            header("Location: perfil.php");
+        }
+        
     }
+
+   
 } else{ ?>
 
 <!DOCTYPE html>
@@ -49,7 +67,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_SESSION["usuario_id"]) && $_
             </div>
             <div class="row">
                 <div class="col-6 offset-3 margin-top">
-                    <form action="contato.php" method="POST">
+                    <form enctype="multipart/form-data" action="contato.php" method="POST">
                         <div class="form-group">
                           <label>Telefone Fixo</label>
                           <input type="tel" class="form-control" placeholder="Telefone Fixo" name="telefone">
@@ -103,6 +121,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && (isset($_SESSION["usuario_id"]) && $_
                             <input type="text" class="form-control" placeholder="Mensagem" name="mensagem">
                         </div>
                         
+                        <div class="form-group">
+                            <label>Foto de Perfil</label>
+                            <input type="hidden" name="MAX_FILE_SIZE" value="99999999">
+                            <input type="file" class="form-control-file" name="foto">
+                        </div>
+
                         <button type="submit" class="btn btn-primary btn-block">Salvar</button>
                       </form>
                 </div>

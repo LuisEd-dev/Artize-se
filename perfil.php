@@ -55,17 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                 <div class="col-12">
                     <div class="jumbotron text-center jumbotron-perfil" id="jumbotron-perfil">
                         
-                        <!--
-                        <form enctype="multipart/form-data" action="perfil.php" method="POST">
-                            <div class="form-group">
-                                <label for="exampleFormControlFile1">Editar Imagem de Perfil</label>
-                                <input type="hidden" name="MAX_FILE_SIZE" value="99999999"/>
-                                <input type="file" class="form-control-file" name="alterar_foto">
-                            </div>
-                            <input type="submit"></input>
-                        </form>
-                        -->
-                        
                         <h1 id="usuario_nome" class="display-4" style="margin-left: 35px"><?php echo $_SESSION["usuario_nome"]; ?>
                         <a class="editar" onclick="editar_nome('<?php echo $_SESSION['usuario_nome'] . "')" . '"'; ?> >
                             <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-pen-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -77,14 +66,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                         <hr class="my-4">
                         <p>Biografia completa</p>
 
-
-
                         <div class="modal fade text-center" id="contato-modal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                             <h5 class="modal-title" id="contato-modal">Informações para Contato</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
@@ -104,7 +91,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                         </div>
                     </div>
 
-                        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#contato-modal" role="button">Entrar em Contato</a>
+                        <a style="margin-left: 25px" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#contato-modal" role="button">Entrar em Contato</a>
+                        
+
+                            <?php $cidade = addslashes($row["cidade"]);
+                            $html = <<<HTML
+                            <a class="editar" onclick="editar_contato('{$row["email"]}','{$row["telefone"]}', '{$row["celular"]}', '{$cidade}', '{$row["UF"]}', '{$row["mensagem"]}' )">
+                            HTML;  echo $html?>
+                            
+                            <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-pen-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                            </svg>
+                        </a>
                       </div> 
                 </div>
             </div>
@@ -232,27 +230,22 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_logi
         $conteudo = addslashes($conteudo);
         fclose($fp);
 
-        $sql = "UPDATE tb_usuarios SET nome = '$nome' WHERE id = '$id'";
-        $result = mysqli_query($db,$sql);
-        
-        if($result == 1){
-            $queryInsercao = "UPDATE tb_img_usuario SET img = '$conteudo' WHERE id = " . $_SESSION['usuario_id'];
-            mysqli_query($db, $queryInsercao) or die("Erro ao gravar a imagem!");
-            echo 'Imagem gravada com sucesso!';
-        } else {
-            $queryInsercao = "INSERT INTO tb_img_usuario (id, img) VALUES ('" . $_SESSION['usuario_id'] ."', '" . $conteudo . "')";
-            mysqli_query($db, $queryInsercao) or die("Erro ao gravar a imagem!");
-            echo 'Imagem gravada com sucesso!';
-        }
-            
+        $queryInsercao = "UPDATE tb_img_usuario SET img = '$conteudo' WHERE id = " . $_SESSION['usuario_id'];
+        mysqli_query($db, $queryInsercao) or die("Erro ao gravar a imagem!");
+        echo 'Imagem gravada com sucesso!';
 
-    /*$querySelecionaPorCodigo = "SELECT img FROM tb_img_usuario WHERE id = 2";
-    $resultado = mysqli_query($db,$querySelecionaPorCodigo);
-    $row = mysqli_fetch_assoc($resultado);*/
-    //echo '<img src="data:image/jpeg;base64,' . base64_encode($row["img"]) . '" />';
-
-    header('Location: index.php');  
+        header('Location: index.php');  
     }
     else{print "Não foi possível carregar a imagem.";}
+} else if($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && (isset($_POST["alterar_email"]) && $_POST["alterar_email"] != "") && (isset($_POST["alterar_telefone"]) && $_POST["alterar_telefone"] != "") && (isset($_POST["alterar_celular"]) && $_POST["alterar_celular"] != "") && (isset($_POST["alterar_cidade"]) && $_POST["alterar_cidade"] != "") && (isset($_POST["alterar_uf"]) && $_POST["alterar_uf"] != "") && (isset($_POST["alterar_mensagem"]) && $_POST["alterar_mensagem"] != "")){
+    if (isset($_COOKIE["ManterLogin"])){
+        $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
+        $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
     }
+    $sql = "UPDATE tb_contato SET telefone = '" . $_POST["alterar_telefone"] . "', celular = '" . $_POST["alterar_celular"] . "', cidade = '" . $_POST["alterar_cidade"] . "', UF = '" . $_POST["alterar_uf"] . "', mensagem = '" . $_POST["alterar_mensagem"] . "' WHERE id =" .$_SESSION['usuario_id'];
+    mysqli_query($db, $sql) or die ("Erro SQL!");
+    $sql = "UPDATE tb_usuarios SET email = '" . $_POST["alterar_email"] . "'";
+    mysqli_query($db, $sql) or die ("Erro SQL!");
+    header("Refresh: 0");
+}
 else { header("Location: ."); } ?>
