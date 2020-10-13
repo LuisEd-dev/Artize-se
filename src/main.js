@@ -229,11 +229,10 @@ function form_cadastro(){
     selectCategoria.setAttribute("name", "categoria")
 
     opcoes = ["Músico(a)", "Dançarino(a)", "Pintor(a)", "Escultor(a)", "Ator(a)", "Escritor(a)", "Cineasta", "Fotografo(a)", "Quadrinista", "Artista digital"]
-    n = 1
     for(opcaoCategoria in opcoes){
         let option = document.createElement('option')
-        option.setAttribute("value", n)
-        n++
+        option.setAttribute("value", opcoes[opcaoCategoria])
+        console.log(opcoes[opcaoCategoria])
         option.appendChild(document.createTextNode(opcoes[opcaoCategoria]))
        
         selectCategoria.appendChild(option)
@@ -431,6 +430,66 @@ function editar_contato($email, $telefone, $celular, $cidade, $uf, $mensagem){
     form.appendChild(labelMensagem)
     form.appendChild(inputMensagem)
 
+    form.appendChild(button)
+
+    jumbotron.appendChild(form)
+}
+function editar_bio($bio){
+    let jumbotron = document.getElementById("jumbotron-perfil")
+    jumbotron.innerHTML = ""
+
+    let form = document.createElement("form")
+    form.setAttribute("action", "perfil.php")
+    form.setAttribute("method", "POST")
+
+    let input = document.createElement("input")
+    input.setAttribute("name", "alterar_biografia")
+    input.setAttribute("type", "text")
+    input.setAttribute("class", "form-control offset-3")
+    input.setAttribute("style", "width: 50%;")
+    input.setAttribute("value", $bio)
+
+    let button = document.createElement("button")
+    button.setAttribute("class", "btn btn-primary")
+    button.setAttribute("style", "width: 50%;")
+    button.appendChild(document.createTextNode("Alterar Biografia"))
+
+    form.appendChild(input)
+    form.appendChild(button)
+
+    jumbotron.appendChild(form)
+}
+function editar_categoria($categoria){
+    let jumbotron = document.getElementById("jumbotron-perfil")
+    jumbotron.innerHTML = ""
+
+    let form = document.createElement("form")
+    form.setAttribute("action", "perfil.php")
+    form.setAttribute("method", "POST")
+
+    let selectCategoria = document.createElement('select')
+    selectCategoria.setAttribute("class", "form-control")
+    selectCategoria.setAttribute("name", "alterar_categoria")
+    selectCategoria.setAttribute("style", "width: 50%; margin-left: 25%;")
+    
+    opcoes = ["Músico(a)", "Dançarino(a)", "Pintor(a)", "Escultor(a)", "Ator(a)", "Escritor(a)", "Cineasta", "Fotografo(a)", "Quadrinista", "Artista digital"]
+    for(opcaoCategoria in opcoes){
+        let option = document.createElement('option')
+        option.setAttribute("value", opcoes[opcaoCategoria])
+        if(opcoes[opcaoCategoria] == $categoria){
+            option.selected = true
+        }
+        option.appendChild(document.createTextNode(opcoes[opcaoCategoria]))
+       
+        selectCategoria.appendChild(option)
+    }
+
+    let button = document.createElement("button")
+    button.setAttribute("class", "btn btn-primary")
+    button.setAttribute("style", "width: 50%;")
+    button.appendChild(document.createTextNode("Alterar Categoria"))
+
+    form.appendChild(selectCategoria)
     form.appendChild(button)
 
     jumbotron.appendChild(form)

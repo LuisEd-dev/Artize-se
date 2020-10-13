@@ -62,9 +62,28 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                             </svg>
                         </a>
                         </h1>
-                        <p class="lead">Breve Apresentação</p>
+                        <p class="lead">
+                            <span class="badge badge-info">
+                                <?php echo $row['categoria']; ?>
+                            </span>
+                            <a class="editar" onclick="editar_categoria('<?php echo $row['categoria']; ?>')">
+                                <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-pen-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                                </svg>
+                            </a>
+                        </p>
                         <hr class="my-4">
-                        <p>Biografia completa</p>
+                        <p>Biografia completa:
+                            <a class="editar" onclick="editar_bio('<?php echo $row['biografia']; ?>')">
+                                <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-pen-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+                                </svg>
+                            </a>
+                        <br>
+                        <?php echo $row['biografia']; ?>
+                        <br>
+                            
+                        </p>
 
                         <div class="modal fade text-center" id="contato-modal" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-lg" role="document">
@@ -245,6 +264,24 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_logi
     $sql = "UPDATE tb_contato SET telefone = '" . $_POST["alterar_telefone"] . "', celular = '" . $_POST["alterar_celular"] . "', cidade = '" . $_POST["alterar_cidade"] . "', UF = '" . $_POST["alterar_uf"] . "', mensagem = '" . $_POST["alterar_mensagem"] . "' WHERE id =" .$_SESSION['usuario_id'];
     mysqli_query($db, $sql) or die ("Erro SQL!");
     $sql = "UPDATE tb_usuarios SET email = '" . $_POST["alterar_email"] . "'";
+    mysqli_query($db, $sql) or die ("Erro SQL!");
+    header("Refresh: 0");
+} else if($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && (isset($_POST["alterar_biografia"]) && $_POST["alterar_biografia"] != "")){
+    if (isset($_COOKIE["ManterLogin"])){
+        $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
+        $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
+    }
+    $bio = mysqli_real_escape_string($db,$_POST["alterar_biografia"]); 
+    $sql = "UPDATE tb_contato SET biografia = '$bio'";
+    mysqli_query($db, $sql) or die ("Erro SQL!");
+    header("Refresh: 0");
+} else if($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && (isset($_POST["alterar_categoria"]) && $_POST["alterar_categoria"] != "")){
+    if (isset($_COOKIE["ManterLogin"])){
+        $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
+        $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
+    }
+    $categoria = mysqli_real_escape_string($db,$_POST["alterar_categoria"]); 
+    $sql = "UPDATE tb_usuarios SET categoria = '$categoria'";
     mysqli_query($db, $sql) or die ("Erro SQL!");
     header("Refresh: 0");
 }

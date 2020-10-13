@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["opcao"])){
         $senha = mysqli_real_escape_string($db,$_POST['senha']); 
         $email = mysqli_real_escape_string($db,$_POST['email']); 
         $categoria = mysqli_real_escape_string($db,$_POST['categoria']); 
-          
+
         $sql = "INSERT INTO tb_usuarios(nome, login, senha, email, categoria) VALUES ('$nome', '$login', '$senha', '$email', '$categoria')";
         $result = mysqli_query($db,$sql);
         
