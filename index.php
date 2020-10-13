@@ -30,12 +30,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["opcao"])){
         $row = mysqli_fetch_assoc($result);
         $count = mysqli_num_rows($result);
         
-        $id = $row['id'];
-        $login = $row['login'];
-        $nome = $row['nome'];
-        
         if($count == 1) {
             
+            $id = $row['id'];
+
             $_SESSION['usuario_login'] = $login;
             $_SESSION['usuario_id'] = $id;
             $_SESSION['usuario_nome'] = $nome;
