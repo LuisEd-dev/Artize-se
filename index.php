@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["opcao"])){
         if($count == 1) {
             
             $id = $row['id'];
+            $nome = $row['nome'];
 
             $_SESSION['usuario_login'] = $login;
             $_SESSION['usuario_id'] = $id;
