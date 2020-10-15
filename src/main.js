@@ -238,7 +238,6 @@ function form_cadastro(){
         selectCategoria.appendChild(option)
     }
 
-//
 
     jumbotron.appendChild(h1)
     jumbotron.appendChild(p)
@@ -279,11 +278,22 @@ function form_cadastro(){
 function editar_nome($nome){
 
     let jumbotron = document.getElementById("jumbotron-perfil")
-    jumbotron.innerHTML = ""
+
+    jumbotron.children[0].style.opacity="0"
+    jumbotron.children[1].style.opacity="0"
+    jumbotron.children[2].style.opacity="0"
+    jumbotron.children[3].style.opacity="0"
+    jumbotron.children[4].style.opacity="0"
+    jumbotron.children[5].style.opacity="0"
+    jumbotron.children[6].style.opacity="0"
 
     let form = document.createElement("form")
     form.setAttribute("action", "perfil.php")
     form.setAttribute("method", "POST")
+    form.style.marginTop = "-300px"
+    form.style.marginLeft = "-40px"
+    form.style.position = "absolute"
+    form.style.width = "100%"
 
     let input = document.createElement("input")
     input.setAttribute("name", "alterar_nome")
@@ -297,7 +307,19 @@ function editar_nome($nome){
     button.setAttribute("style", "width: 50%;")
     button.appendChild(document.createTextNode("Alterar Nome do Usuário"))
 
+    let cancelar = document.createElement("a")
+    cancelar.setAttribute("class", "btn btn-secondary")
+    cancelar.setAttribute("style", "width: 50%;")
+    cancelar.setAttribute("onclick", "cancelar()")
+    cancelar.appendChild(document.createTextNode("Cancelar"))
+
+    let br = document.createElement("br")
+
+    form.setAttribute("id", "formulario")
+
     form.appendChild(input)
+    form.appendChild(cancelar)
+    form.appendChild(br)
     form.appendChild(button)
 
     jumbotron.appendChild(form)
@@ -305,13 +327,22 @@ function editar_nome($nome){
 function editar_img(){
 
     let jumbotron = document.getElementById("jumbotron-perfil")
-    jumbotron.innerHTML = ""
+
+    jumbotron.children[0].style.opacity="0"
+    jumbotron.children[1].style.opacity="0"
+    jumbotron.children[2].style.opacity="0"
+    jumbotron.children[3].style.opacity="0"
+    jumbotron.children[4].style.opacity="0"
+    jumbotron.children[5].style.opacity="0"
+    jumbotron.children[6].style.opacity="0"
 
     let form = document.createElement("form")
-    form.setAttribute("enctype", "multipart/form-data")
     form.setAttribute("action", "perfil.php")
     form.setAttribute("method", "POST")
-
+    form.style.marginTop = "-300px"
+    form.style.marginLeft = "-40px"
+    form.style.position = "absolute"
+    form.style.width = "100%"
     let div = document.createElement("div")
     div.setAttribute("class", "form-group")
 
@@ -332,11 +363,24 @@ function editar_img(){
     button.setAttribute("type", "submit")
     button.setAttribute("class", "btn btn-primary")
     button.appendChild(document.createTextNode("Enviar!"))
+    button.style.width = "50%"
+
+    let cancelar = document.createElement("a")
+    cancelar.setAttribute("class", "btn btn-secondary")
+    cancelar.setAttribute("style", "width: 50%;")
+    cancelar.setAttribute("onclick", "cancelar()")
+    cancelar.appendChild(document.createTextNode("Cancelar"))
+
+    let br = document.createElement("br")
+
+    form.setAttribute("id", "formulario")
 
     div.appendChild(label)
     div.appendChild(input1)
     div.appendChild(input2)
 
+    div.appendChild(cancelar)
+    div.appendChild(br)
     div.appendChild(button)
 
     form.appendChild(div)
@@ -346,12 +390,23 @@ function editar_img(){
 function editar_contato($email, $telefone, $celular, $cidade, $uf, $mensagem){
 
     let jumbotron = document.getElementById("jumbotron-perfil")
-    jumbotron.innerHTML = ""
+
+    jumbotron.children[0].style.opacity="0"
+    jumbotron.children[1].style.opacity="0"
+    jumbotron.children[2].style.opacity="0"
+    jumbotron.children[3].style.opacity="0"
+    jumbotron.children[4].style.opacity="0"
+    jumbotron.children[5].style.opacity="0"
+    jumbotron.children[6].style.opacity="0"
+    jumbotron.style.height = "600px"
 
     let form = document.createElement("form")
     form.setAttribute("action", "perfil.php")
     form.setAttribute("method", "POST")
-
+    form.style.marginTop = "-300px"
+    form.style.marginLeft = "-40px"
+    form.style.position = "absolute"
+    form.style.width = "100%"
     let labelEmail = document.createElement('label')
     labelEmail.appendChild(document.createTextNode("Email:"))
 
@@ -417,6 +472,16 @@ function editar_contato($email, $telefone, $celular, $cidade, $uf, $mensagem){
     button.setAttribute("style", "width: 50%;")
     button.appendChild(document.createTextNode("Alterar Dados de Contato"))
 
+    let cancelar = document.createElement("a")
+    cancelar.setAttribute("class", "btn btn-secondary")
+    cancelar.setAttribute("style", "width: 50%;")
+    cancelar.setAttribute("onclick", "cancelar()")
+    cancelar.appendChild(document.createTextNode("Cancelar"))
+
+    let br = document.createElement("br")
+
+    form.setAttribute("id", "formulario")
+
     form.appendChild(labelEmail)
     form.appendChild(inputEmail)
     form.appendChild(labelTelefone)
@@ -430,17 +495,30 @@ function editar_contato($email, $telefone, $celular, $cidade, $uf, $mensagem){
     form.appendChild(labelMensagem)
     form.appendChild(inputMensagem)
 
+    form.appendChild(cancelar)
+    form.appendChild(br)
     form.appendChild(button)
 
     jumbotron.appendChild(form)
 }
 function editar_bio($bio){
     let jumbotron = document.getElementById("jumbotron-perfil")
-    jumbotron.innerHTML = ""
+
+    jumbotron.children[0].style.opacity="0"
+    jumbotron.children[1].style.opacity="0"
+    jumbotron.children[2].style.opacity="0"
+    jumbotron.children[3].style.opacity="0"
+    jumbotron.children[4].style.opacity="0"
+    jumbotron.children[5].style.opacity="0"
+    jumbotron.children[6].style.opacity="0"
 
     let form = document.createElement("form")
     form.setAttribute("action", "perfil.php")
     form.setAttribute("method", "POST")
+    form.style.marginTop = "-300px"
+    form.style.marginLeft = "-40px"
+    form.style.position = "absolute"
+    form.style.width = "100%"
 
     let input = document.createElement("input")
     input.setAttribute("name", "alterar_biografia")
@@ -454,7 +532,19 @@ function editar_bio($bio){
     button.setAttribute("style", "width: 50%;")
     button.appendChild(document.createTextNode("Alterar Biografia"))
 
+    let cancelar = document.createElement("a")
+    cancelar.setAttribute("class", "btn btn-secondary")
+    cancelar.setAttribute("style", "width: 50%;")
+    cancelar.setAttribute("onclick", "cancelar()")
+    cancelar.appendChild(document.createTextNode("Cancelar"))
+
+    let br = document.createElement("br")
+
+    form.setAttribute("id", "formulario")
+
     form.appendChild(input)
+    form.appendChild(cancelar)
+    form.appendChild(br)
     form.appendChild(button)
 
     jumbotron.appendChild(form)
@@ -503,14 +593,14 @@ function editar_categoria($categoria){
     button.appendChild(document.createTextNode("Alterar Categoria"))
 
     let cancelar = document.createElement("a")
-    cancelar.setAttribute("class", "btn btn-primary")
+    cancelar.setAttribute("class", "btn btn-secondary")
     cancelar.setAttribute("style", "width: 50%;")
     cancelar.setAttribute("onclick", "cancelar()")
     cancelar.appendChild(document.createTextNode("Cancelar"))
 
     let br = document.createElement("br")
 
-    form.setAttribute("id", "teste")
+    form.setAttribute("id", "formulario")
 
     form.appendChild(selectCategoria)
     form.appendChild(cancelar)
@@ -530,6 +620,8 @@ function cancelar(){
     jumbotron.children[5].style.opacity="1"
     jumbotron.children[6].style.opacity="1"
 
-    let form = document.getElementById("teste")
-    form.innerHTML = ""
+    jumbotron.style.height = "auto"
+
+    let form = document.getElementById("formulario")
+    form.parentNode.removeChild(form);
 }
