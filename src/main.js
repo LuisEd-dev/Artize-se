@@ -460,12 +460,25 @@ function editar_bio($bio){
     jumbotron.appendChild(form)
 }
 function editar_categoria($categoria){
+
     let jumbotron = document.getElementById("jumbotron-perfil")
-    jumbotron.innerHTML = ""
+    
+    jumbotron.children[0].style.opacity="0"
+    jumbotron.children[1].style.opacity="0"
+    jumbotron.children[2].style.opacity="0"
+    jumbotron.children[3].style.opacity="0"
+    jumbotron.children[4].style.opacity="0"
+    jumbotron.children[5].style.opacity="0"
+    jumbotron.children[6].style.opacity="0"
+
 
     let form = document.createElement("form")
     form.setAttribute("action", "perfil.php")
     form.setAttribute("method", "POST")
+    form.style.marginTop = "-300px"
+    form.style.marginLeft = "-40px"
+    form.style.position = "absolute"
+    form.style.width = "100%"
 
     let selectCategoria = document.createElement('select')
     selectCategoria.setAttribute("class", "form-control")
@@ -489,8 +502,34 @@ function editar_categoria($categoria){
     button.setAttribute("style", "width: 50%;")
     button.appendChild(document.createTextNode("Alterar Categoria"))
 
+    let cancelar = document.createElement("a")
+    cancelar.setAttribute("class", "btn btn-primary")
+    cancelar.setAttribute("style", "width: 50%;")
+    cancelar.setAttribute("onclick", "cancelar()")
+    cancelar.appendChild(document.createTextNode("Cancelar"))
+
+    let br = document.createElement("br")
+
+    form.setAttribute("id", "teste")
+
     form.appendChild(selectCategoria)
+    form.appendChild(cancelar)
+    form.appendChild(br)
     form.appendChild(button)
 
     jumbotron.appendChild(form)
+}
+function cancelar(){
+    let jumbotron = document.getElementById("jumbotron-perfil")
+    
+    jumbotron.children[0].style.opacity="1"
+    jumbotron.children[1].style.opacity="1"
+    jumbotron.children[2].style.opacity="1"
+    jumbotron.children[3].style.opacity="1"
+    jumbotron.children[4].style.opacity="1"
+    jumbotron.children[5].style.opacity="1"
+    jumbotron.children[6].style.opacity="1"
+
+    let form = document.getElementById("teste")
+    form.innerHTML = ""
 }
