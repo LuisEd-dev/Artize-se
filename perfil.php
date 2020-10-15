@@ -134,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
 
             <div class="row">
 
-                <div class="col-3">
+                <div class="col-lg-3">
                     <div class="card text-center" style="width: 100%;">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
@@ -144,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                         </div>
                       </div>
                 </div>
-                <div class="col-3">
+                <div class="col-lg-3">
                     <div class="card text-center" style="width: 100%;">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
@@ -154,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                         </div>
                       </div>
                 </div>
-                <div class="col-3">
+                <div class="col-lg-3">
                     <div class="card text-center" style="width: 100%;">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
@@ -164,7 +164,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                         </div>
                       </div>
                 </div>
-                <div class="col-3">
+                <div class="col-lg-3">
                     <div class="card text-center" style="width: 100%;">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
