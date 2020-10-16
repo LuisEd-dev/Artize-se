@@ -1,9 +1,8 @@
 <?php
 session_start();
-include("db/db.php");
-
+include("../db/db.php");
     
-if ($_SERVER["REQUEST_METHOD"] == "GET"){
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])){
     
     $id = mysqli_real_escape_string($db,$_GET["id"]); 
 
@@ -37,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET"){
             $row = mysqli_fetch_assoc($result);
         }    
 
-    } else { echo "erro!"; exit();}
+    } else { echo "Usuário não Encontrado!"; exit();}
     
     
 ?>
@@ -49,23 +48,23 @@ if ($_SERVER["REQUEST_METHOD"] == "GET"){
         <title>Artize-se</title>
         <meta name='viewport' content='width=device-width, initial-scale=1'>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/main.css">
-        <script src='bootstrap/js/bootstrap.min.js'></script>
-        <script src='src/main.js'></script>
+        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/main.css">
+        <script src='../bootstrap/js/bootstrap.min.js'></script>
+        <script src='../src/main.js'></script>
     </head>
     <body>
         <div class="container">
             <div class="row">
                 <div class="col-12 margin-top">
                     <center>
-                        <?php echo '<img style="margin-left: 25px;" class="rounded-circle" width="300" height="300" src="data:image/jpeg;base64,' . base64_encode($row["img"]) . '" />'; ?>
+                        <?php echo '<img class="rounded-circle" width="300" height="300" src="data:image/jpeg;base64,' . base64_encode($row["img"]) . '" />'; ?>
                     </center> 
                 </div>
                 <div class="col-12">
                     <div class="jumbotron text-center jumbotron-perfil" id="jumbotron-perfil">
                         
-                        <h1 id="usuario_nome" class="display-4" style="margin-left: 35px"><?php echo $row["nome"]; ?>
+                        <h1 id="usuario_nome" class="display-4"><?php echo $row["nome"]; ?>
                         </h1>
                         <p class="lead">
                             <span class="badge badge-info">
@@ -105,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET"){
                         </div>
                     </div>
 
-                        <a style="margin-left: 25px" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#contato-modal" role="button">Entrar em Contato</a>
+                        <a class="btn btn-primary btn-lg" data-toggle="modal" data-target="#contato-modal" role="button">Entrar em Contato</a>
                             
                       </div> 
                 </div>
