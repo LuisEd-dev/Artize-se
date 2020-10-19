@@ -9,7 +9,7 @@ include("db/db.php");
     $count = mysqli_num_rows($result);
 
     if($count == 1){
-        header("Location: perfil.php");
+        header("Location: home.php");
     } else {
         header("Location: contato.php");
     }

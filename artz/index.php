@@ -1,3 +1,17 @@
+<!DOCTYPE html>
+    <html lang="pt">
+    <head>
+        <meta charset='utf-8'>
+        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+        <title>Artize-se</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/main.css">
+        <script src='../bootstrap/js/bootstrap.min.js'></script>
+        <script src='../src/main.js'></script>
+    </head>
+    <body>
 <?php
 session_start();
 include("../db/db.php");
@@ -36,24 +50,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])){
             $row = mysqli_fetch_assoc($result);
         }    
 
-    } else { echo "Usuário não Encontrado!"; exit();}
+    } else { ?>
+         
+        <div class="alert alert-danger" role="alert">
+            Usuário não encontrado!
+        </div>
+
+        <?php exit();}
     
     
 ?>
-<!DOCTYPE html>
-    <html lang="pt">
-    <head>
-        <meta charset='utf-8'>
-        <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-        <title>Artize-se</title>
-        <meta name='viewport' content='width=device-width, initial-scale=1'>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../css/main.css">
-        <script src='../bootstrap/js/bootstrap.min.js'></script>
-        <script src='../src/main.js'></script>
-    </head>
-    <body>
+
         <div class="container">
             <div class="row">
                 <div class="col-12 margin-top">
@@ -98,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])){
                                 <h3> <?php echo $row['mensagem']; ?> </h3>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                             </div>
                         </div>
                         </div>
@@ -186,6 +193,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["id"])){
 
         </div>
 
+ 
+    <?php } else { ?>
+
+        <div class="alert alert-danger" role="alert">
+            Defina um nome ou id de usuário!
+        </div>
+
+    <?php } ?>
+
     </body>
 </html>
-    <?php } ?>

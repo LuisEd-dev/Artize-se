@@ -40,6 +40,52 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
         <script src='src/main.js'></script>
     </head>
     <body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Artize-se</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="home.php">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                </ul>
+
+                <ul class="nav justify-content-center">
+                    <form class="form-inline nav-item">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Pesquisa" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                    </form>
+                </ul>
+                
+                <a style="color: white;" class="nav-link" href="perfil.php">
+                    <?php echo '<img style="margin-left: 25px;" class="rounded-circle" width="30" height="30" src="data:image/jpeg;base64,' . base64_encode($row["img"]) . '" />'; ?>
+                    Perfil
+                </a>
+                <a class="btn btn-danger" style="width: 100px;" href="logout.php">Sair</a>
+                
+
+            </div>
+          </nav>
+
         <div class="container">
             <div class="row">
                 <div class="col-12 margin-top">
@@ -104,7 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                                 <h3> <?php echo $row['mensagem']; ?> </h3>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                             </div>
                         </div>
                         </div>
@@ -201,9 +247,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
             </div>
 
         </div>
-
-        <a class="btn btn-danger btn-block" href="logout.php">Sair</a>
-
     </body>
 </html>
 <?php } }
