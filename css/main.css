@@ -7,3 +7,9 @@
 .perfil-background-container-fluid{
     background-color: darkgray;
 }
+.float-right{
+    float: right;
+}
+.float-left{
+    float: left;
+}

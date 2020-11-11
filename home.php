@@ -88,7 +88,33 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
           </nav>
 
         <div class="container">
-            
+            <div class="row">
+                <div class="col-12">
+                <br>
+                    
+                
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1"><?php echo '<img class="rounded-circle" width="50" height="50" src="data:image/jpeg;base64,' . base64_encode($row["img"]) . '" />'; ?></span>
+                        </div>
+
+                        <textarea type="text" class="form-control" placeholder="Conte-nos novidades..." aria-label="Conte-nos novidades..." aria-describedby="basic-addon1" style="height: 70px;"></textarea>
+                    </div>
+
+                    <div class="form-check float-left">
+                        <input type="checkbox" class="form-check-input" id="Destaque">
+                        <label class="form-check-label" for="Destaque">Destaque</label>
+                    </div>
+
+                    <div class="btn-group float-right" role="group" >
+                        <input type="file" class="btn btn-secondary">
+
+                        <button type="button" class="btn btn-success">Compartilhar</button>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
     <?php }} else { header("Location: index.php"); }?>
