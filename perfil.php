@@ -1,8 +1,7 @@
 <?php
 session_start();
 include("db/db.php");
-
-    
+     
 if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) ){
     
     if (isset($_COOKIE["ManterLogin"])){
@@ -232,6 +231,31 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                 </div>
             </div>
 
+        <?php 
+        $posts_sql = "select *, date_format(data, '%d/%m/%Y') as data from tb_posts";
+        $posts_query = mysqli_query($db,$posts_sql);
+        while($posts_row = mysqli_fetch_assoc($posts_query)){ ?>
+            <div class="row">
+                    <div class="col-8 offset-2">
+                        <br>
+                        <div class="media">
+                            <img src="posts/<?php echo $posts_row["img"]; ?>" width="70px" height="70px" class="mr-3" alt="...">
+                            <div class="media-body">
+                            <h5 class="mt-0"><?php echo $row["nome"]; ?> <span class="badge badge-secondary"> <?php echo $posts_row["data"]; ?> </span> </h5>
+                            <?php echo $posts_row["conteudo"]; ?>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-sm">Editar</button>
+                            <form action="posts/apagar.php" method="POST">
+                                <input type="hidden" name="post_id" value="<?php echo $posts_row["id"]; ?>">
+                                <button type="submit" class="btn btn-danger btn-sm">Apagar</button>
+                            </form>
+                        </div>
+
+                        <hr class="my-4">
+                    </div>
+                </div>
+        <?php } ?>
+        <!--
             <div class="row">
                 <div class="col-8 offset-2">
                     <br>
@@ -245,7 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                     <br>
                 </div>
             </div>
-
+        -->
         </div>
     </body>
 </html>
@@ -273,7 +297,6 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_logi
     }
 
 } else if($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && isset($_FILES["alterar_foto"])){
-
 
     if (isset($_COOKIE["ManterLogin"])){
         $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
@@ -328,4 +351,5 @@ else if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_logi
     mysqli_query($db, $sql) or die ("Erro SQL!");
     header("Refresh: 0");
 }
-else { header("Location: ."); } ?>
+else { header("Location: .erro"); } 
+?>

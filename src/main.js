@@ -343,6 +343,7 @@ function editar_img(){
     form.style.marginLeft = "-40px"
     form.style.position = "absolute"
     form.style.width = "100%"
+    form.setAttribute("enctype", "multipart/form-data")
     let div = document.createElement("div")
     div.setAttribute("class", "form-group")
 
