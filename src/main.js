@@ -626,3 +626,87 @@ function cancelar(){
     let form = document.getElementById("formulario")
     form.parentNode.removeChild(form);
 }
+function editar_img_post(){
+
+    let jumbotron = document.getElementById("editar-post")
+
+    /*jumbotron.children[0].style.opacity="0"
+    jumbotron.children[1].style.opacity="0"
+    jumbotron.children[2].style.opacity="0"
+    jumbotron.children[3].style.opacity="0"
+    jumbotron.children[4].style.opacity="0"
+    jumbotron.children[5].style.opacity="0"
+    jumbotron.children[6].style.opacity="0"*/
+
+    if(!document.getElementById("img_post")){
+        let buttonEditar = document.querySelector(".btn.btn-block.btn-success")
+        buttonEditar.style.opacity="0"
+
+        let form = document.createElement("form")
+        form.setAttribute("id", "img_post")
+        form.setAttribute("action", "perfil.php")
+        form.setAttribute("method", "POST")
+        form.style.marginTop = "-50px"
+        //form.style.marginLeft = "-40px"
+        //form.style.position = "absolute"
+        form.style.width = "100%"
+        form.setAttribute("enctype", "multipart/form-data")
+        let div = document.createElement("div")
+        div.setAttribute("class", "form-group")
+
+        let label = document.createElement("label")
+        label.appendChild(document.createTextNode("Editar Imagem"))
+
+        let input1 = document.createElement("input")
+        input1.setAttribute("type", "hidden")
+        input1.setAttribute("name", "MAX_FILE_SIZE")
+        input1.setAttribute("value", "99999999")
+
+        let input2 = document.createElement("input")
+        input2.setAttribute("type", "file")
+        input2.setAttribute("class", "form-control-file offset-4")
+        input2.setAttribute("name", "alterar_foto")
+
+        let button = document.createElement("button")
+        button.setAttribute("type", "submit")
+        button.setAttribute("class", "btn btn-primary")
+        button.appendChild(document.createTextNode("Enviar!"))
+        button.style.width = "50%"
+
+        let cancelar = document.createElement("a")
+        cancelar.setAttribute("class", "btn btn-secondary")
+        cancelar.setAttribute("style", "width: 50%;")
+        cancelar.setAttribute("onclick", "cancelar_img_post()")
+        cancelar.appendChild(document.createTextNode("Cancelar"))
+
+        let br = document.createElement("br")
+
+        div.appendChild(label)
+        div.appendChild(input1)
+        div.appendChild(input2)
+
+        div.appendChild(cancelar)
+        div.appendChild(br)
+        div.appendChild(button)
+
+        form.appendChild(div)
+
+        jumbotron.appendChild(form)
+    } else {
+        
+        let form = document.getElementById("img_post")
+        form.parentNode.removeChild(form);
+    }
+    
+}
+function cancelar_img_post(){
+
+    let checkbox = document.querySelector("input#checkbox")
+    checkbox.checked = true
+
+    let form = document.getElementById("img_post")
+    form.parentNode.removeChild(form);
+
+    let buttonEditar = document.querySelector(".btn.btn-block.btn-success")
+    buttonEditar.style.opacity="1"
+}

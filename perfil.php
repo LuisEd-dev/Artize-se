@@ -189,7 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $row["nome"]; ?></h5>
                                 <p class="card-text"><?php echo $posts_row["conteudo"]; ?></p>
-                                <form action="posts/remover_destaque.php" method="POST">
+                                <form action="posts/remover.php" method="POST">
                                     <input type="hidden" name="post_id" value="<?php echo $posts_row["id"]; ?>">
                                     <button type="submit" class="btn btn-primary">Remover Destaque</a>
                                 </form>
@@ -267,7 +267,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                             <h5 class="mt-0"><?php echo $row["nome"]; ?> <span class="badge badge-secondary"> <?php echo $posts_row["data"]; ?> </span> </h5>
                             <?php echo $posts_row["conteudo"]; ?>
                             </div>
-                            <button type="button" class="btn btn-primary btn-sm">Editar</button>
+                            <form action="posts/editar.php" method="POST">
+                                <input type="hidden" name="post_id" value="<?php echo $posts_row["id"]; ?>">
+                                <button type="submit" class="btn btn-primary btn-sm">Editar</button>
+                            </form>
+                            
                             <form action="posts/apagar.php" method="POST">
                                 <input type="hidden" name="post_id" value="<?php echo $posts_row["id"]; ?>">
                                 <button type="submit" class="btn btn-danger btn-sm">Apagar</button>
