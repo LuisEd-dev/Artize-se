@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
         WHERE tb_usuarios.id = " . $_SESSION["usuario_id"];
         $result = mysqli_query($db,$sql);
         $row = mysqli_fetch_assoc($result);
-        
+
 ?>
 
 <!DOCTYPE html>
@@ -179,6 +179,26 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
 
             <div class="row">
 
+                <?php 
+                $posts_sql = "select *, date_format(data, '%d/%m/%Y') as data from tb_posts WHERE destaque = 'S' LIMIT 4 ";
+                $posts_query = mysqli_query($db,$posts_sql);
+                while($posts_row = mysqli_fetch_assoc($posts_query)){ //print_r($posts_row); }?>
+                    <div class="col-lg-3">
+                        <div class="card text-center" style="width: 100%;">
+                            <img src="posts/<?php echo $posts_row["img"]; ?>" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $row["nome"]; ?></h5>
+                                <p class="card-text"><?php echo $posts_row["conteudo"]; ?></p>
+                                <form action="posts/remover_destaque.php" method="POST">
+                                    <input type="hidden" name="post_id" value="<?php echo $posts_row["id"]; ?>">
+                                    <button type="submit" class="btn btn-primary">Remover Destaque</a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+                <!--
+
                 <div class="col-lg-3">
                     <div class="card text-center" style="width: 100%;">
                         <img src="..." class="card-img-top" alt="...">
@@ -218,6 +238,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                           <a href="#" class="btn btn-primary">Go somewhere</a>
                         </div>
                       </div>
+
+
+                      -->
                 </div>                       
             </div>
             <br>
