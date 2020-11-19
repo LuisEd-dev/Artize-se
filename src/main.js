@@ -696,6 +696,10 @@ function editar_img_post(){
         
         let form = document.getElementById("img_post")
         form.parentNode.removeChild(form);
+
+        let buttonEditar = document.querySelector(".btn.btn-block.btn-success")
+        buttonEditar.style.opacity="1"
+
     }
     
 }

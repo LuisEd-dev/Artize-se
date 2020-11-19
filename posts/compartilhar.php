@@ -44,6 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) 
 		
 		$arqError = $_FILES['imagem']['error'];
 
+		echo $arqError;
+
 		if ($arqError == 0) {
 			
 			if (array_search($arqType, $tiposPermitidos) === false) {
@@ -71,11 +73,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) 
 					$query = mysqli_query($db, $sql) or die ("Erro na sql!") ;
 
 					if ($query == true) {
-					echo 'Projeto inserido com sucesso!';
+					
 						header("Location: ../home.php"); 
 					}
 				}
 			}
+		} else if($arqError == 4){
+			$sql = "insert into tb_posts (autor, conteudo, destaque) values ('$id', '$conteudo', '$destaque')";
+		
+			$query = mysqli_query($db, $sql) or die ("Erro na sql!") ;
+			if ($query == true) {
+					echo "Sql ok";
+					header("Location: ../home.php"); 
+				}
 		}
 	}
 }

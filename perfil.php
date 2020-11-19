@@ -262,7 +262,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && ( isset($_SESSION["usuario_login"]) |
                     <div class="col-8 offset-2">
                         <br>
                         <div class="media">
+                            <?php if($posts_row["img"]){ ?>
                             <img src="posts/<?php echo $posts_row["img"]; ?>" width="70px" height="70px" class="mr-3" alt="...">
+                            <?php } ?>
+                            
                             <div class="media-body">
                             <h5 class="mt-0"><?php echo $row["nome"]; ?> <span class="badge badge-secondary"> <?php echo $posts_row["data"]; ?> </span> </h5>
                             <?php echo $posts_row["conteudo"]; ?>

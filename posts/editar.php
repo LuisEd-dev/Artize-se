@@ -19,7 +19,7 @@ session_start();
 include("../db/db.php");
 
     
-if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) ){
+if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && !isset($_POST["editar"])){
     if (isset($_COOKIE["ManterLogin"])){
         $_SESSION["usuario_login"] = $_COOKIE["ManterLogin"];
         $_SESSION["usuario_id"] = $_COOKIE["ManterID"];
@@ -40,8 +40,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) 
         $post_query = mysqli_query($db,$sql) or die("Erro ao deletar post!");
         $post_row = mysqli_fetch_assoc($post_query);
 
-        print_r($post_row);
-
         ?> 
         
         <div class="col-sm text-center">
@@ -49,20 +47,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) 
                 <h1 class="display-4">Editar Post</h1>
                 <p class="lead text-center">ID: <?php echo $id; ?></p>
                 <hr class="my-5">
-                <form action="." method="POST">
+                <form action="editar.php" method="POST">
+                    <input type="hidden" name="editar">
                     <div class="form-group">
                         <div class="col-6 offset-3">
                             <label>Conteudo</label>
-                            <textarea type="text" class="form-control" name="login"><?php echo $post_row["conteudo"]; ?></textarea>
+                            <textarea type="text" class="form-control" name="conteudo"><?php echo $post_row["conteudo"]; ?></textarea>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <div class="col-6 offset-3">
+                            <label for="destaque">Destaque</label>
+                            <select class="form-control" id="destaque">
+                                <option value="S" <?php if($post_row["destaque"] == "S"){ echo "selected";} ?> >Ativo</option>
+                                <option value="N" <?php if($post_row["destaque"] == "N"){ echo "selected";} ?> >Inativo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <?php if($post_row["img"]){ ?>
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" name="check" id="checkbox" checked onclick="editar_img_post()">
                         <label class="form-check-label" id="checar">Manter Foto Anterior</label>
                     </div>
+                    
                     <div class="col-6 offset-3">
                         <button type="submit" class="btn btn-block btn-success">Editar</button>
                     </div>
+
+                    <?php } else { ?>
+                    <div class="col-6 offset-3">
+                        <button type="submit" class="btn btn-block btn-success">Editar</button>
+                    </div>
+                    <script type="text/javascript">
+                        document.onload=editar_img_post();
+                        
+                        let div = document.getElementsByClassName("form-group")[2]
+                        div.removeChild(document.querySelector(".btn.btn-secondary"))
+
+                    </script>
+                    <?php } ?>
                 </form>
             </div>
     </div>
@@ -72,6 +97,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) 
         
         <?php
     }
+} else if ( $_SERVER["REQUEST_METHOD"] == "POST" && ( isset($_SESSION["usuario_login"]) || isset($_COOKIE["ManterLogin"]) ) && (isset($_POST["editar"])) ){
+    
+    $autor = mysqli_real_escape_string($db,$_SESSION["usuario_id"]); 
+    $id = mysqli_real_escape_string($db,$_POST["post_id"]); 
+
+    $conteudo = mysqli_real_escape_string($db,$_POST["conteudo"]); 
+    $check = mysqli_real_escape_string($db,$_POST["check"]); 
+
+    if($check){
+        echo "checked";
+    }
+
+    //$sql = "UPDATE tb_posts SET (conteudo, destaque) VALUES ('$conteudo', '$destaque')";
+
+
+
 }
 
 ?>
